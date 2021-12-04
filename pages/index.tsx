@@ -1,22 +1,22 @@
 import Head from 'next/head'
-import Layout, { siteTitle } from '../components/layout'
+import { Layout, siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
 import { getSortedPostsData } from '../lib/posts'
 import Link from 'next/link'
-import Date from '../components/date'
+import { Date } from '../components/date'
 import { GetStaticProps } from 'next'
 
 const selfIntroduction: string = 'Backend developer with dreamy soul ^^'
 
-export default function Home({
-  allPostsData
-}: {
+type HomeProps = {
   allPostsData: {
     date: string
     title: string
     id: string
   }[]
-}) {
+}
+
+export default function Home({ allPostsData }: HomeProps) {
   return (
     <Layout home>
       <Head>
