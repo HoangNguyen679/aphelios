@@ -1,6 +1,6 @@
 ---
 title: 'CSV talk in Ruby'
-date: '2021-12-2'
+date: '2021-12-02'
 ---
 
 I am not good at coding, so every time working with `csv`, I get so many troubles. After all, I decide to make a note about `csv` file by using ruby. And I think it is not bad to mention `csv` working with some other programming language. Let's begin!
@@ -243,12 +243,11 @@ If you want to work with excel, check [Roo](https://github.com/roo-rb/roo)
 
 # CSV Rust
 
+Today, I am interested in Rust, so let try something.
 I am so surprize that the csv doc of rust is so beautiful. That makes me easy to use lib and save my time.
 
 [CSV Doc](https://docs.rs/csv/latest/csv/)
 [CSV Github](https://github.com/BurntSushi/rust-csv)
-
-This is fucking good!
 
 ```rust
 use std::env;
@@ -285,4 +284,9 @@ fn get_first_arg() -> Result<OsString, Box<dyn Error>> {
     }
 }
 ```
+
+This is fucking good! As I see, it quite fast.
+I will benchmark the speed of reading csv in the next time.
+
+(To be continue...)
 
