@@ -18,6 +18,10 @@ export default function Layout({
     <div className={styles.container}>
       <Head>
         <link rel="icon" href="/favicon.ico" />
+        <link
+          href={`https://unpkg.com/prismjs@0.0.1/themes/prism-okaidia.css`}
+          rel="stylesheet"
+        />
         <meta
           name="description"
           content="Learn how to build a personal website using Next.js"
