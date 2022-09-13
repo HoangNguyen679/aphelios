@@ -9,7 +9,7 @@ Ruby memory leak problems are maybe familiar with Rubyist and you can find so ma
 
 One morning, I woke up and received a message from the analysis team. They received 502 code when calling APIs. I started to investigate, of course, from server log. I went to Cloudwatch Log and found something were abnormal.
 
-![alt high-memory-graph](../public/images/high-memory-graph.png)
+![alt high-memory-graph](https://github.com/HoangNguyen679/aphelios/blob/main/public/images/high-memory-graph.png)
 
 When analysis team called APIs, the memory percentage raise high, it is normal. But after that, the memory percentage did not decrease. And after 2-3 days, the memory went to 99%. That were unacceptable. And if I restart the server, it becames normal for the first day, after that, it's memory went up crazyly.
 
@@ -141,7 +141,7 @@ ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
 
 And, the memory was not high anymore. With the analysis team APIs called at around 15:00. It was totally OK.
 
-![alt low-memory-graph](../public/images/low-memory-graph.png)
+![alt low-memory-graph](https://github.com/HoangNguyen679/aphelios/blob/main/public/images/low-memory-graph.png)
 
 The server memory was often below 30% and I satisfied with that results.
 
