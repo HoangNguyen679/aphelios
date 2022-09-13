@@ -3,6 +3,8 @@ title: "Rails memory leak problems"
 date: "2021-10-10"
 ---
 
+Checking....
+
 Ruby memory leak problems are maybe familiar with Rubyist and you can find so many articles about them palso the solution with detailed explanation. As a Rails developer, I also stuck on that, and I want to share my experience. Let's start!
 
 # Problem showed up
