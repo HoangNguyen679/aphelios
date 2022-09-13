@@ -15,6 +15,8 @@ One morning, I woke up and received a message from the analysis team. They recei
 
 <img src="/images/high-memory-graph.png" />
 
+<!-- part 1.5 -->
+
 When analysis team called APIs, the memory percentage raise high, it is normal. But after that, the memory percentage did not decrease. And after 2-3 days, the memory went to 99%. That were unacceptable. And if I restart the server, it becames normal for the first day, after that, it's memory went up crazyly.
 
 At first, I thought maybe it were thread or process or gem memory leak problems. So I started to check.
