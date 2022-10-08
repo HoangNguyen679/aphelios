@@ -43,13 +43,9 @@ People suggested that using [puma_worker_killer](https://github.com/zombocom/pum
 
 ## Benchmark tools
 
-<!-- part 4 -->
-
-[puma_worker_killer](https://github.com/zombocom/puma_worker_killer) was not the solution. So if the problem at first, was not Puma ? I needed to confirm that. I have many requests so I would go to test the HTTP requests. You can use many tools to do that. Here I used wrk and siege.
+[puma_worker_killer](https://github.com/zombocom/puma_worker_killer) was not the solution. But what if the problem originally, was not from Puma ? I needed to confirm that. I have many requests so I would go to test the HTTP requests. There are several tools that can perform this, but here I used wrk and siege.
 
 ### Wrk
-
-<!-- part 5 -->
 
 You can find [wrk here](https://github.com/wg/wrk).
 
