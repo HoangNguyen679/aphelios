@@ -25,10 +25,8 @@ At first, I thought maybe it were thread or process or gem memory leak problems.
 
 ## Derails
 
-<!-- part 2 -->
-
-I begined with [Derailed](https://github.com/zombocom/derailed_benchmarks) for general view of my Rails application. You can see memory and object created at required time with all gems the Rails app is using.
-And that report didn't seem wrong because I didn't found any issue with gem memory here.
+I began with [Derailed](https://github.com/zombocom/derailed_benchmarks) for general view of my Rails application. You can see memory and objects created at required time with all gems the Rails app is using.
+Nothing seemed wrong in the report because I didn't find any issue with gem memory here.
 
 You also can find the gem with memory problem [here](https://github.com/ASoftCo/leaky-gems)
 
