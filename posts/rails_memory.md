@@ -88,9 +88,7 @@ But the APIs for the analysis team is inside AWS cloud, so I needed to check the
 
 ### Siege
 
-<!-- part 7 -->
-
-[Siege](https://github.com/JoeDog/siege) provides more useful options. So let's try with it.
+[Siege](https://github.com/JoeDog/siege) provides more useful options. So let's try it!
 
 I defined the request file `usls.txt` as below:
 
