@@ -112,9 +112,7 @@ And called them
 siege -c10 -t30s -f urls.txt -H "Authorization: $authorization_key"
 ```
 
-<!-- part 8 -->
-
-Result was:
+The result was as follows:
 
 ```bash
 Lifting the server siege...
@@ -140,7 +138,7 @@ Memory: 30% -> 39% -> 39%
 ```
 
 All my requests were handled but the memory did not decrease.
-It seemed like the Puma were not the root of the memory problem.
+It seemed like the Puma was not the root of the memory problem.
 I had to dig deeper, maybe the real culprit had been Ruby all along
 
 # Jemalloc
