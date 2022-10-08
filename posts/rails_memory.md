@@ -163,9 +163,7 @@ RUN apt-get install -y libjemalloc-dev libjemalloc2
 ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
 ```
 
-<!-- part 11 -->
-
-And, the memory was not high anymore. With the analysis team APIs called at around 15:00. It was totally OK.
+Finally the memory was not high anymore. It was totally OK when the analysis team called APIs at around 15:00.
 
 <img src="/images/low-memory-graph.png" />
 
