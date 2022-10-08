@@ -34,12 +34,10 @@ You also can find the gem with memory problem [here](https://github.com/ASoftCo/
 
 ## Puma
 
-<!-- part 3 -->
-
-So maybe Puma - the HTTP server of the app caused problem.
+So maybe it's the Puma - the HTTP server of the app that caused the problem.
 I received so many requests and use workers to handle them. Maybe Puma was sick and workers didn't work right. Actually, I found the [Puma memory problem](https://github.com/puma/puma/issues/342).
 
-People suggested that using [puma_worker_killer](https://github.com/zombocom/puma_worker_killer) but that was bad idea. My workers can be killed suddenly and the requests went to server can failed anytime without management. It was defenitely not the solution.
+People suggested using [puma_worker_killer](https://github.com/zombocom/puma_worker_killer) but that would be a bad idea. My workers could be killed suddenly and the requests went to the server could fail anytime without additional management. It was defenitely not the solution.
 
 ## Benchmark tools
 
