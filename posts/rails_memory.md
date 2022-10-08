@@ -3,37 +3,37 @@ title: "Rails memory leak problems"
 date: "2021-10-10"
 ---
 
-Ruby memory leak problems are maybe familiar with Rubyist and you can find so many articles about them palso the solution with detailed explanation. As a Rails developer, I also stuck on that, and I want to share my experience. Let's start!
+Ruby memory leak problems are maybe familiar to Rubyist and you can find so many articles about them also the solution with a detailed explanation. As a Rails developer, I myself have also encountered this problem before, and I want to share my experience. Let's start!
 
 # Problem showed up
 
-One morning, I woke up and received a message from the analysis team. They received 502 code when calling APIs. I started to investigate, of course, from server log. I went to Cloudwatch Log and found something were abnormal.
+One morning, I woke up and received a message from the analysis team. They received 502 code when calling APIs. I started to investigate, of course, from server log. I went to Cloudwatch Log and found something abnormal.
 
 <img src="/images/high-memory-graph.png" />
 
-When analysis team called APIs, the memory percentage raise high, it is normal. But after that, the memory percentage did not decrease. And after 2-3 days, the memory went to 99%. That were unacceptable. And if I restart the server, it becames normal for the first day, after that, it's memory went up crazyly.
+It's normal if the memory percentage increases when APIs are called. However, not only did it not decrease after that, 2-3 days later it went up to 99%. UNACCEPTABLE!  It became normal after I restarted the server, but just for the first day. After that, the memory went up crazily, again.
 
-At first, I thought maybe it were thread or process or gem memory leak problems. So I started to check.
+At first, I assumed it was thread or process or gem memory leak problems. So I started to check.
 
 # Memory investigate
 
 ## Derails
 
-I begined with [Derailed](https://github.com/zombocom/derailed_benchmarks) for general view of my Rails application. You can see memory and object created at required time with all gems the Rails app is using.
-And that report didn't seem wrong because I didn't found any issue with gem memory here.
+I began with [Derailed](https://github.com/zombocom/derailed_benchmarks) for general view of my Rails application. You can see memory and objects created at required time with all gems the Rails app is using.
+Nothing seemed wrong in the report because I didn't find any issue with gem memory here.
 
 You also can find the gem with memory problem [here](https://github.com/ASoftCo/leaky-gems)
 
 ## Puma
 
-So maybe Puma - the HTTP server of the app caused problem.
+So maybe it's the Puma - the HTTP server of the app that caused the problem.
 I received so many requests and use workers to handle them. Maybe Puma was sick and workers didn't work right. Actually, I found the [Puma memory problem](https://github.com/puma/puma/issues/342).
 
-People suggested that using [puma_worker_killer](https://github.com/zombocom/puma_worker_killer) but that was bad idea. My workers can be killed suddenly and the requests went to server can failed anytime without management. It was defenitely not the solution.
+People suggested using [puma_worker_killer](https://github.com/zombocom/puma_worker_killer) but that would be a bad idea. My workers could be killed suddenly and the requests went to the server could fail anytime without additional management. It was defenitely not the solution.
 
 ## Benchmark tools
 
-[puma_worker_killer](https://github.com/zombocom/puma_worker_killer) was not the solution. So if the problem at first, was not Puma ? I needed to confirm that. I have many requests so I would go to test the HTTP requests. You can use many tools to do that. Here I used wrk and siege.
+[puma_worker_killer](https://github.com/zombocom/puma_worker_killer) was not the solution. But what if the problem originally, was not from Puma ? I needed to confirm that. I have many requests so I would go to test the HTTP requests. There are several tools that can perform this, but here I used wrk and siege.
 
 ### Wrk
 
@@ -65,14 +65,14 @@ CPU: 0.3% -> 7.5% -> 0.3%
 Memori: 9.7% -> 9.7% (no decrease)
 ```
 
-So when many requests came, the memory went high and not decrease. In the same time, CPU utilization went low after handling the requests.
+As you can see from the above result, when many requests came, the memory went high and did not decrease. After handling the requests, CPU utilization went low.
 
-But the APIs for the analysis team is inside AWS cloud, so I needed to check the internal requests.
-(I realized that if the public facing APIs requests went high, the server memory also went high, that's not good at all)
+But the APIs used by the analysis team is inside AWS cloud, so I needed to check the internal requests.
+(I realized that if the public APIs requests went high, the server memory also went high, that's not good at all)
 
 ### Siege
 
-[Siege](https://github.com/JoeDog/siege) provides more useful options. So let's try with it.
+[Siege](https://github.com/JoeDog/siege) provides more useful options. So let's try it!
 
 I defined the request file `usls.txt` as below:
 
@@ -94,7 +94,7 @@ And called them
 siege -c10 -t30s -f urls.txt -H "Authorization: $authorization_key"
 ```
 
-Result was:
+The result was as follows:
 
 ```bash
 Lifting the server siege...
@@ -120,8 +120,8 @@ Memory: 30% -> 39% -> 39%
 ```
 
 All my requests were handled but the memory did not decrease.
-It seemed like the Puma were not the root of the memory problem.
-I had to dig deeper and maybe it was ruby.
+It seemed like the Puma was not the root of the memory problem.
+I had to dig deeper, maybe the real culprit had been Ruby all along
 
 # Jemalloc
 
@@ -139,15 +139,15 @@ RUN apt-get install -y libjemalloc-dev libjemalloc2
 ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
 ```
 
-And, the memory was not high anymore. With the analysis team APIs called at around 15:00. It was totally OK.
+Finally the memory was not high anymore. It was totally OK when the analysis team called APIs at around 15:00.
 
 <img src="/images/low-memory-graph.png" />
 
 The server memory was often below 30% and I satisfied with that results.
 
-# More thinkings
+#  Further discussion
 
 You can find docker Ruby with jemalloc images [here](https://hub.docker.com/r/swipesense/ruby-jemalloc)
-It's quite convenient to start with the right choice of memory management library and it will mitigate your pain when discover the memory problems.
+It's recommended to start with a right choice of memory management library as it will mitigate your pain of encountering memory problems.
 
 For now, I don't see the reason why ruby is not compiled with jemalloc. Ruby need improve itself for memory also performance in order to compete with other raising up programming languages. Let's go.
