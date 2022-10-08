@@ -171,11 +171,9 @@ And, the memory was not high anymore. With the analysis team APIs called at arou
 
 The server memory was often below 30% and I satisfied with that results.
 
-# More thinkings
-
-<!-- part 12 -->
+#  Further discussion
 
 You can find docker Ruby with jemalloc images [here](https://hub.docker.com/r/swipesense/ruby-jemalloc)
-It's quite convenient to start with the right choice of memory management library and it will mitigate your pain when discover the memory problems.
+It's recommended to start with a right choice of memory management library as it will mitigate your pain of encountering memory problems.
 
 For now, I don't see the reason why ruby is not compiled with jemalloc. Ruby need improve itself for memory also performance in order to compete with other raising up programming languages. Let's go.
