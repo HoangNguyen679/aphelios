@@ -139,15 +139,11 @@ CPU: 0.03% -> 1.9% -> 0.05%
 Memory: 30% -> 39% -> 39%
 ```
 
-<!-- part 9 -->
-
 All my requests were handled but the memory did not decrease.
 It seemed like the Puma were not the root of the memory problem.
-I had to dig deeper and maybe it was ruby.
+I had to dig deeper, maybe the real culprit had been Ruby all along
 
 # Jemalloc
-
-<!-- part 10 -->
 
 After many hours side by side with google I found these blog:
 
