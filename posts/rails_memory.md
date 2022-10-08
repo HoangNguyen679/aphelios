@@ -3,23 +3,17 @@ title: "Rails memory leak problems"
 date: "2021-10-10"
 ---
 
-<!-- Checking.... -->
-
-Ruby memory leak problems are maybe familiar with Rubyist and you can find so many articles about them palso the solution with detailed explanation. As a Rails developer, I also stuck on that, and I want to share my experience. Let's start!
+Ruby memory leak problems are maybe familiar to Rubyist and you can find so many articles about them also the solution with a detailed explanation. As a Rails developer, I myself have also encountered this problem before, and I want to share my experience. Let's start!
 
 # Problem showed up
 
-<!-- part 1 -->
-
-One morning, I woke up and received a message from the analysis team. They received 502 code when calling APIs. I started to investigate, of course, from server log. I went to Cloudwatch Log and found something were abnormal.
+One morning, I woke up and received a message from the analysis team. They received 502 code when calling APIs. I started to investigate, of course, from server log. I went to Cloudwatch Log and found something abnormal.
 
 <img src="/images/high-memory-graph.png" />
 
-<!-- part 1.5 -->
+It's normal if the memory percentage increases when APIs are called. However, not only did it not decrease after that, 2-3 days later it went up to 99%. UNACCEPTABLE!  It became normal after I restarted the server, but just for the first day. After that, the memory went up crazily, again.
 
-When analysis team called APIs, the memory percentage raise high, it is normal. But after that, the memory percentage did not decrease. And after 2-3 days, the memory went to 99%. That were unacceptable. And if I restart the server, it becames normal for the first day, after that, it's memory went up crazyly.
-
-At first, I thought maybe it were thread or process or gem memory leak problems. So I started to check.
+At first, I assumed it was thread or process or gem memory leak problems. So I started to check.
 
 # Memory investigate
 
