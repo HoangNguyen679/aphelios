@@ -79,12 +79,10 @@ CPU: 0.3% -> 7.5% -> 0.3%
 Memori: 9.7% -> 9.7% (no decrease)
 ```
 
-<!-- part 6 -->
+As you can see from the above result, when many requests came, the memory went high and did not decrease. After handling the requests, CPU utilization went low.
 
-So when many requests came, the memory went high and not decrease. In the same time, CPU utilization went low after handling the requests.
-
-But the APIs for the analysis team is inside AWS cloud, so I needed to check the internal requests.
-(I realized that if the public facing APIs requests went high, the server memory also went high, that's not good at all)
+But the APIs used by the analysis team is inside AWS cloud, so I needed to check the internal requests.
+(I realized that if the public APIs requests went high, the server memory also went high, that's not good at all)
 
 ### Siege
 
