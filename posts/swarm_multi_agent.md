@@ -4,13 +4,13 @@ date: "2024-11-18"
 ---
 
 <!-- vscode-markdown-toc -->
-* [Prerequisites](#Prerequisites)
-	* [Basic Knowledge of LLMs](#BasicKnowledgeofLLMs)
-	* [Function Calling](#FunctionCalling)
-	* [Basic Knowledge of Agents](#BasicKnowledgeofAgents)
-* [What is Swarm?](#WhatisSwarm)
-* [Using Swarm in Production is Not Recommended ⚠️](#UsingSwarminProductionisNotRecommended)
-* [References](#References)
+* [Prerequisites](#prerequisites)
+	* [Basic Knowledge of LLMs](#basic-knowledge-of-llms)
+	* [Function Calling](#function-calling)
+	* [Basic Knowledge of Agents](#basic-knowledge-of-agents)
+* [What is Swarm?](#what-is-swarm)
+* [Using Swarm in Production is Not Recommended ⚠️](#using-swarm-in-production-is-not-recommended-️)
+* [References](#references)
 
 <!-- vscode-markdown-toc-config
 	numbering=false
@@ -20,9 +20,9 @@ date: "2024-11-18"
 
 In October 2024, OpenAI released a repository named "Swarm". Its purpose is lightweight multi-agent orchestration specifically for experimentation. This article explains how to build multi-agent systems using Swarm. Let's get started.
 
-## <a name='Prerequisites'></a>Prerequisites
+## Prerequisites
 
-### <a name='BasicKnowledgeofLLMs'></a>Basic Knowledge of LLMs
+### Basic Knowledge of LLMs
 
 Recently, Large Language Models (LLMs) like ChatGPT and Claude have become widely known. These models learn from vast amounts of data and answer users' questions. However, LLMs cannot understand the latest information that they haven't learned yet, specialized data, or internal organizational data. In such cases, LLMs may respond with "I don't know" or provide incorrect information (hallucination).
 
@@ -36,7 +36,7 @@ To solve this problem, there are the following methods:
 
 In this article, we will use method ❷ as a sample program.
 
-### <a name='FunctionCalling'></a>Function Calling
+### Function Calling
 
 LLMs can obtain specific information by utilizing external functions. For example, OpenAI's ChatGPT can call functions during requests. Let's look at the following example:
 
@@ -80,13 +80,13 @@ The schema corresponding to this function is as follows:
 
 With this schema, the LLM can understand the function's information and call the function according to the question. The clearer the description, the more accurate the LLM's judgment will be.
 
-<img src="/images/swarm-llm-func.png" />
+![Function-calling flow between a user, agent, LLM, and external function](/images/swarm-llm-func.png)
 
 As you can see in the image, users communicate with an agent rather than directly with the LLM. The LLM decides whether to call a function or not. (In the context of an LLM specialized in executing tasks, we'll use the term "agent" instead of LLM from here on.)
 
 Of course, as the number of functions increases, the input data in the API request increases, and the cost of input tokens also rises.
 
-### <a name='BasicKnowledgeofAgents'></a>Basic Knowledge of Agents
+### Basic Knowledge of Agents
 
 While function calling is convenient, real applications involve more than simple questions like "What's the temperature in Tokyo?". As tasks become more complex, system prompts tend to get longer. Abstract explanations can lead to abstract understanding by agents, making them more prone to hallucinations. Therefore, it's important to improve accuracy by processing tasks step by step. OpenAI calls these multi-step tasks "Routines".
 
@@ -103,13 +103,13 @@ By breaking it down into multiple steps, each step's role becomes smaller and re
 
 However, what if each step becomes more complex? In that case, it becomes difficult to determine which step is being implemented. Generally, agents tend to be more accurate when specializing in specific fields rather than understanding multiple fields simultaneously.
 
-## <a name='WhatisSwarm'></a>What is Swarm?
+## What is Swarm?
 
 Swarm is a mechanism for coordinating agents with each other, based on the technology of function calling.
 
 It becomes possible for agents to call other agents in the same way as function calling. This allows each step to be handled by specialized agents. If a specialized agent cannot handle a task, it can delegate the task to another specialized agent.
 
-<img src="/images/swarm-flow-chart.png" />
+![Swarm flow between operator, email, and schedule agents](/images/swarm-flow-chart.png)
 
 For example, let's say you want to create a support bot for a company. It needs to handle the following tasks:
 
@@ -153,7 +153,7 @@ response = client.run(
 
 ```
 
-## <a name='UsingSwarminProductionisNotRecommended'></a>Using Swarm in Production is Not Recommended ⚠️
+## Using Swarm in Production is Not Recommended ⚠️
 
 There are risks in using Swarm in production environments for the following reasons:
 
@@ -165,7 +165,7 @@ There are risks in using Swarm in production environments for the following reas
 
 For these reasons, while Swarm is suitable for experiencing multi-agent systems for learning purposes, it's not recommended for use in production environments. It's best utilized solely for learning purposes.
 
-## <a name='References'></a>References
+## References
 
 - https://github.com/openai/swarm
 - https://github.com/HoangNguyen689/swarm-playground
