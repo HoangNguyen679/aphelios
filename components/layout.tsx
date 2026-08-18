@@ -5,7 +5,7 @@ import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
 
 const name = 'Hoang Nguyen'
-export const siteTitle = 'Just a personal blog'
+export const siteTitle = 'Tea and me'
 
 type LayoutProps = {
   children: React.ReactNode

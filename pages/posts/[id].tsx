@@ -4,6 +4,8 @@ import Head from 'next/head'
 import { Date } from '../../components/date'
 import utilStyles from '../../styles/utils.module.css'
 import { GetStaticProps, GetStaticPaths } from 'next'
+import { useRef } from 'react'
+import { ReadingNavigator } from '../../components/reading-navigator'
 
 type PostProps = {
   postData: {
@@ -14,17 +16,25 @@ type PostProps = {
 }
 
 export default function Post({ postData }: PostProps) {
+  const contentRef = useRef<HTMLDivElement>(null)
+
   return (
     <Layout>
       <Head>
         <title>{postData.title}</title>
       </Head>
+      <ReadingNavigator contentRef={contentRef} contentId="post-content" />
       <article>
         <h1 className={`${utilStyles.headingXl} ${utilStyles.centerText}`}>{postData.title}</h1>
         <div className={`${utilStyles.lightText} ${utilStyles.centerText}`}>
           <Date dateString={postData.date} />
         </div>
-        <div className={`${utilStyles.justifyText}`} dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+        <div
+          id="post-content"
+          ref={contentRef}
+          className={`${utilStyles.justifyText}`}
+          dangerouslySetInnerHTML={{ __html: postData.contentHtml }}
+        />
       </article>
     </Layout>
   )
