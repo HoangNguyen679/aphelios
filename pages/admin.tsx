@@ -12,6 +12,8 @@ type PostDraft = {
   sha?: string
 }
 
+type PostSummary = Pick<PostDraft, 'slug' | 'title' | 'date'>
+
 type SessionResult = {
   authenticated: boolean
   configured: boolean
@@ -20,6 +22,11 @@ type SessionResult = {
 }
 
 const DRAFT_KEY = 'aphelios-admin-draft'
+const QUICK_POST_COUNT = 6
+
+function sortPosts(posts: PostSummary[]) {
+  return posts.sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title))
+}
 
 function today() {
   const date = new Date()
@@ -54,7 +61,9 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
 export default function Admin() {
   const router = useRouter()
   const [session, setSession] = useState<SessionResult | null>(null)
-  const [posts, setPosts] = useState<string[]>([])
+  const [posts, setPosts] = useState<PostSummary[]>([])
+  const [search, setSearch] = useState('')
+  const [postsLoading, setPostsLoading] = useState(true)
   const [post, setPost] = useState<PostDraft>(emptyPost)
   const [dirty, setDirty] = useState(false)
   const [draftAvailable, setDraftAvailable] = useState(false)
@@ -69,7 +78,10 @@ export default function Admin() {
       .then(result => {
         setSession(result)
         if (result.authenticated) {
-          request<{ posts: string[] }>('/api/admin/posts').then(data => setPosts(data.posts)).catch(err => setError(err.message))
+          request<{ posts: PostSummary[] }>('/api/admin/posts')
+            .then(data => setPosts(data.posts))
+            .catch(err => setError(err.message))
+            .finally(() => setPostsLoading(false))
           setDraftAvailable(Boolean(localStorage.getItem(DRAFT_KEY)))
         }
       })
@@ -80,6 +92,12 @@ export default function Admin() {
     if (dirty) localStorage.setItem(DRAFT_KEY, JSON.stringify(post))
   }, [dirty, post])
 
+  const normalizedSearch = search.trim().toLowerCase()
+  const matchingPosts = posts.filter(item =>
+    item.title.toLowerCase().includes(normalizedSearch) || item.slug.toLowerCase().includes(normalizedSearch)
+  )
+  const visiblePosts = normalizedSearch ? matchingPosts : matchingPosts.slice(0, QUICK_POST_COUNT)
+
   function update<K extends keyof PostDraft>(field: K, value: PostDraft[K]) {
     setPost(current => ({ ...current, [field]: value }))
     setDirty(true)
@@ -89,6 +107,7 @@ export default function Admin() {
   function startNewPost() {
     if (dirty && !window.confirm('Leave the current unsaved changes? The browser draft will be kept.')) return
     setPost(emptyPost())
+    setSearch('')
     setDirty(false)
     setPreview('')
     setCommitUrl('')
@@ -163,7 +182,10 @@ export default function Admin() {
         body: JSON.stringify(post)
       })
       setPost(current => ({ ...current, sha: result.sha }))
-      setPosts(current => [...new Set([...current, post.slug])].sort())
+      setPosts(current => sortPosts([
+        ...current.filter(item => item.slug !== post.slug),
+        { slug: post.slug, title: post.title.trim(), date: post.date }
+      ]))
       setDirty(false)
       setDraftAvailable(false)
       localStorage.removeItem(DRAFT_KEY)
@@ -213,11 +235,35 @@ export default function Admin() {
       <main className={styles.workspace}>
         <aside className={styles.sidebar}>
           <button className={styles.primaryButton} type="button" onClick={startNewPost}>+ New post</button>
-          <label htmlFor="post-list">Existing posts</label>
-          <select id="post-list" value={post.sha ? post.slug : ''} onChange={event => openPost(event.target.value)} disabled={busy}>
-            <option value="">Select a post…</option>
-            {posts.map(slug => <option key={slug} value={slug}>{slug}</option>)}
-          </select>
+          <label htmlFor="post-search">Existing posts</label>
+          <input
+            className={styles.searchInput}
+            id="post-search"
+            type="search"
+            value={search}
+            onChange={event => setSearch(event.target.value)}
+            placeholder="Search posts…"
+            autoComplete="off"
+          />
+          <div className={styles.postListHeader}>{normalizedSearch ? 'Search results' : 'Recent posts'}</div>
+          <div className={styles.postList}>
+            {postsLoading && <p className={styles.emptyPosts}>Loading posts…</p>}
+            {!postsLoading && visiblePosts.length === 0 && <p className={styles.emptyPosts}>No posts found.</p>}
+            {visiblePosts.map(item => (
+              <button
+                className={`${styles.postItem} ${post.sha && post.slug === item.slug ? styles.activePost : ''}`}
+                type="button"
+                key={item.slug}
+                onClick={() => openPost(item.slug)}
+                disabled={busy}
+                aria-current={post.sha && post.slug === item.slug ? 'true' : undefined}
+              >
+                <strong>{item.title || item.slug}</strong>
+                <span>{item.slug}</span>
+                <time dateTime={item.date}>{item.date}</time>
+              </button>
+            ))}
+          </div>
           {draftAvailable && (
             <div className={styles.draftPrompt}>
               <strong>Browser draft found</strong>

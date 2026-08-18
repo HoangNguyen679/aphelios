@@ -40,7 +40,7 @@
 
 .workspace {
   display: grid;
-  grid-template-columns: 230px minmax(0, 1fr);
+  grid-template-columns: 280px minmax(0, 1fr);
   min-height: calc(100vh - 64px);
 }
 
@@ -58,7 +58,7 @@
   font-weight: 600;
 }
 
-.sidebar select,
+.searchInput,
 .fields input {
   width: 100%;
   border: 1px solid #c8ced8;
@@ -66,6 +66,97 @@
   background: #fff;
   padding: 9px 10px;
   font: inherit;
+}
+
+.searchInput:focus,
+.fields input:focus {
+  border-color: #0969da;
+  outline: 2px solid #0969da33;
+}
+
+.postListHeader {
+  margin-top: 4px;
+  color: #667085;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.postList {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.postItem {
+  position: relative;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  padding: 9px 10px;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.postItem:hover {
+  background: #f6f8fa;
+}
+
+.postItem:focus-visible {
+  outline: 2px solid #0969da;
+  outline-offset: -2px;
+}
+
+.postItem:disabled {
+  cursor: wait;
+  opacity: .6;
+}
+
+.postItem strong,
+.postItem span,
+.postItem time {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.postItem strong {
+  padding-right: 66px;
+  line-height: 1.35;
+}
+
+.postItem span,
+.postItem time {
+  color: #667085;
+  font-size: 12px;
+}
+
+.postItem time {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.activePost {
+  border-color: #b6d7fe;
+  background: #ddf4ff;
+}
+
+.activePost:hover {
+  background: #ddf4ff;
+}
+
+.emptyPosts {
+  margin: 6px 10px;
+  color: #667085;
+  font-size: 14px;
 }
 
 .primaryButton {
