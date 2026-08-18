@@ -1,12 +1,18 @@
-import { remark } from 'remark';
-import html from 'remark-html';
-import prism from 'remark-prism';
+import rehypePrism from 'rehype-prism-plus'
+import rehypeSanitize from 'rehype-sanitize'
+import rehypeSlug from 'rehype-slug'
+import rehypeStringify from 'rehype-stringify'
+import { remark } from 'remark'
+import remarkRehype from 'remark-rehype'
 
-export const markdownToHtml = async(markdown: string) => {
+export const markdownToHtml = async (markdown: string) => {
   const result = await remark()
-    .use(html)
-    .use(prism as any)
-    .process(markdown);
-  
-  return result.toString();
+    .use(remarkRehype)
+    .use(rehypeSanitize)
+    .use(rehypeSlug)
+    .use(rehypePrism)
+    .use(rehypeStringify)
+    .process(markdown)
+
+  return result.toString()
 }

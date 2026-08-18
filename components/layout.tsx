@@ -17,10 +17,6 @@ export const Layout = ({ children, home }: LayoutProps) => {
     <div className={styles.container}>
       <Head>
         <link rel="icon" href="/favicon.ico" />
-        <link
-          href={`https://unpkg.com/prismjs@0.0.1/themes/prism-okaidia.css`}
-          rel="stylesheet"
-        />
         <meta
           name="description"
           content="Learn how to build a personal website using Next.js"
@@ -50,21 +46,17 @@ export const Layout = ({ children, home }: LayoutProps) => {
         ) : (
           <>
             <Link href="/">
-              <a>
-                <Image
-                  priority
-                  src="/images/profile.jpg"
-                  className={utilStyles.borderCircle}
-                  height={108}
-                  width={108}
-                  alt={name}
-                />
-              </a>
+              <Image
+                priority
+                src="/images/profile.jpg"
+                className={utilStyles.borderCircle}
+                height={108}
+                width={108}
+                alt={name}
+              />
             </Link>
             <h2 className={utilStyles.headingLg}>
-              <Link href="/">
-                <a className={utilStyles.colorInherit}>{name}</a>
-              </Link>
+              <Link href="/" className={utilStyles.colorInherit}>{name}</Link>
             </h2>
           </>
         )}
@@ -72,9 +64,7 @@ export const Layout = ({ children, home }: LayoutProps) => {
       <main>{children}</main>
       {!home && (
         <div className={styles.backToHome}>
-          <Link href="/">
-            <a>← Back to home</a>
-          </Link>
+          <Link href="/">← Back to home</Link>
         </div>
       )}
     </div>
