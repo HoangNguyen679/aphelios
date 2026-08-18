@@ -66,20 +66,19 @@
 
 .marker::before {
   position: absolute;
-  top: 8px;
-  right: 4px;
-  width: 11px;
-  height: 2px;
-  border-radius: 2px;
+  top: 6px;
+  right: 5px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
   background: #9aa4b2;
   content: '';
-  transition: width 120ms ease, background 120ms ease;
+  transition: background 120ms ease;
 }
 
 .marker:hover::before,
 .marker:focus-visible::before,
 .activeMarker::before {
-  width: 21px;
   background: #0070f3;
 }
 
