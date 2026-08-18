@@ -80,7 +80,7 @@ The schema corresponding to this function is as follows:
 
 With this schema, the LLM can understand the function's information and call the function according to the question. The clearer the description, the more accurate the LLM's judgment will be.
 
-![Function-calling flow between a user, agent, LLM, and external function](/images/swarm-llm-func.png)
+![Function-calling flow between a user, agent, LLM, and external function](/images/swarm-llm-func.webp)
 
 As you can see in the image, users communicate with an agent rather than directly with the LLM. The LLM decides whether to call a function or not. (In the context of an LLM specialized in executing tasks, we'll use the term "agent" instead of LLM from here on.)
 
@@ -109,7 +109,7 @@ Swarm is a mechanism for coordinating agents with each other, based on the techn
 
 It becomes possible for agents to call other agents in the same way as function calling. This allows each step to be handled by specialized agents. If a specialized agent cannot handle a task, it can delegate the task to another specialized agent.
 
-![Swarm flow between operator, email, and schedule agents](/images/swarm-flow-chart.png)
+![Swarm flow between operator, email, and schedule agents](/images/swarm-flow-chart.webp)
 
 For example, let's say you want to create a support bot for a company. It needs to handle the following tasks:
 
