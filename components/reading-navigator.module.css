@@ -1,0 +1,170 @@
+.navigator {
+  position: fixed;
+  z-index: 20;
+  top: 18vh;
+  right: 12px;
+  width: 48px;
+  height: 64vh;
+}
+
+.rail {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.rail::before,
+.progress {
+  position: absolute;
+  top: 0;
+  right: 7px;
+  width: 3px;
+  height: 100%;
+  border-radius: 999px;
+  content: '';
+}
+
+.rail::before {
+  background: #d8dee7;
+}
+
+.progress {
+  height: var(--reading-progress);
+  background: #0070f3;
+  transition: height 80ms linear;
+}
+
+.rail:focus-visible {
+  outline: 2px solid #0070f3;
+  outline-offset: 2px;
+  border-radius: 5px;
+}
+
+.markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.marker {
+  position: absolute;
+  right: 0;
+  width: 38px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translateY(-50%);
+}
+
+.marker::before {
+  position: absolute;
+  top: 8px;
+  right: 4px;
+  width: 11px;
+  height: 2px;
+  border-radius: 2px;
+  background: #9aa4b2;
+  content: '';
+  transition: width 120ms ease, background 120ms ease;
+}
+
+.marker:hover::before,
+.marker:focus-visible::before,
+.activeMarker::before {
+  width: 21px;
+  background: #0070f3;
+}
+
+.marker::after {
+  position: absolute;
+  top: 50%;
+  right: 32px;
+  max-width: 240px;
+  padding: 5px 8px;
+  border: 1px solid #d8dee7;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0 2px 8px #1720331f;
+  color: #172033;
+  content: attr(data-label);
+  font-size: 12px;
+  line-height: 1.3;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  text-overflow: ellipsis;
+  transform: translateY(-50%) translateX(4px);
+  transition: opacity 100ms ease, transform 100ms ease;
+  white-space: nowrap;
+}
+
+.marker:hover::after,
+.marker:focus-visible::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.marker:focus-visible {
+  outline: none;
+}
+
+.percentage {
+  position: absolute;
+  right: 2px;
+  bottom: -30px;
+  color: #667085;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 700px) {
+  .navigator {
+    top: 0;
+    right: 0;
+    left: 0;
+    width: auto;
+    height: 3px;
+  }
+
+  .rail {
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 14px;
+  }
+
+  .rail::before,
+  .progress {
+    top: 0;
+    right: auto;
+    left: 0;
+    width: 100%;
+    height: 3px;
+  }
+
+  .progress {
+    width: var(--reading-progress);
+    transition: width 80ms linear;
+  }
+
+  .markers,
+  .percentage {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress,
+  .marker::before,
+  .marker::after {
+    transition: none;
+  }
+}
