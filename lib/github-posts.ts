@@ -44,12 +44,22 @@ export function validSlug(slug: string) {
   return /^[a-z0-9]+(?:[a-z0-9_-]*[a-z0-9])?$/.test(slug)
 }
 
-export async function listPosts() {
+export type PostSummary = {
+  slug: string
+  title: string
+  date: string
+}
+
+export async function listPosts(): Promise<PostSummary[]> {
   const files = await github<GitHubFile[]>(`/contents/posts?ref=${encodeURIComponent(branch)}`)
-  return files
+  const slugs = files
     .filter(file => file.type === 'file' && file.name.endsWith('.md'))
     .map(file => file.name.replace(/\.md$/, ''))
-    .sort()
+  const posts = await Promise.all(slugs.map(readPost))
+
+  return posts
+    .map(({ slug, title, date }) => ({ slug, title, date }))
+    .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title))
 }
 
 export async function readPost(slug: string) {
@@ -59,10 +69,11 @@ export async function readPost(slug: string) {
   if (!file.content || file.encoding !== 'base64') throw new GitHubApiError(500, 'GitHub did not return the post content.')
 
   const parsed = matter(Buffer.from(file.content.replace(/\n/g, ''), 'base64').toString('utf8'))
+  const parsedDate = parsed.data.date
   return {
     slug,
     title: String(parsed.data.title || ''),
-    date: String(parsed.data.date || ''),
+    date: parsedDate instanceof Date ? parsedDate.toISOString().slice(0, 10) : String(parsedDate || ''),
     body: parsed.content,
     sha: file.sha
   }

@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Date } from '../components/date'
 import { GetStaticProps } from 'next'
 
-const selfIntroduction: string = 'Backend developer with dreamy soul ^^'
+const selfIntroduction: string = 'A little thought :">'
 
 type HomeProps = {
   allPostsData: {
