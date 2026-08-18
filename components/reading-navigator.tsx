@@ -14,7 +14,6 @@ type ReadingNavigatorProps = {
 }
 
 const MIN_SCROLL_LENGTH = 0.5
-const MAX_FALLBACK_MARKERS = 12
 
 function maximumScroll() {
   return Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
@@ -23,18 +22,6 @@ function maximumScroll() {
 function currentProgress() {
   const maximum = maximumScroll()
   return maximum ? Math.min(1, Math.max(0, window.scrollY / maximum)) : 0
-}
-
-function fallbackMarkers(maximum: number): Marker[] {
-  const markerCount = Math.min(
-    MAX_FALLBACK_MARKERS,
-    Math.max(4, Math.ceil(maximum / window.innerHeight) + 1)
-  )
-
-  return Array.from({ length: markerCount }, (_, index) => {
-    const ratio = index / (markerCount - 1)
-    return { label: `${Math.round(ratio * 100)}%`, ratio }
-  })
 }
 
 function prefersReducedMotion() {
@@ -65,11 +52,6 @@ export function ReadingNavigator({ contentRef, contentId }: ReadingNavigatorProp
       setProgress(currentProgress())
 
       const headings = Array.from(content!.querySelectorAll<HTMLElement>('h2, h3'))
-      if (!headings.length) {
-        setMarkers(fallbackMarkers(maximum))
-        return
-      }
-
       setMarkers(headings.map((heading, index) => ({
         label: heading.textContent?.trim() || `Section ${index + 1}`,
         ratio: maximum
